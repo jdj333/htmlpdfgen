@@ -22,6 +22,8 @@ var htmlpdfgen = function(element) {
 		            "endobj\r\n" +
 
 		            "4 0 obj\r\n" +
+
+								//TODO: make length value dynamic
 		            "<</Length 196>>\r\n" +
 
 								//start stream
@@ -39,15 +41,36 @@ var htmlpdfgen = function(element) {
 		            "q BT 0 g 40.00 725.50 Td\r\n" +
 		            "0 -29.70 Td\r\n" +
 
-								//font color
-		            "0.400 0.400 0.400 rg\r\n" +
+								//font color (red)
+		            "1.000 0.000 0.000 rg\r\n" +
 								//font #, font size, (text output)
 								"/F1 24.75 Tf (text 1) Tj\r\n" +
 								"ET Q\r\n" +
+								//point x y
 								"q BT 0 g 40.00 679.30 Td\r\n" +
+								//margin
 								"0 -29.70 Td\r\n" +
+
+								//font color (green)
+								"0.000 1.000 0.000 rg\r\n" +
+								//font #, font size, (text output)
 		            "/F1 24.75 Tf (text 2 ) Tj\r\n" +
 		            "ET Q\r\n" +
+								//point x y
+								"q BT 0 g 40.00 633.10 Td\r\n" +
+								//margin
+								"0 -29.70 Td\r\n" +
+
+								//font color (blue)
+								"0.000 0.000 1.000 rg\r\n" +
+								//font #, font size, (text output)
+		            "/F1 24.75 Tf (text 3 ) Tj\r\n" +
+		            "ET Q\r\n" +
+								//point x y
+								"q BT 0 g 40.00 586.90 Td\r\n" +
+								//margin
+								"0 -29.70 Td\r\n" +
+
 		            "Q\r\n" +
 		            "endstream\r\n" +
 		            "endobj\r\n" +
