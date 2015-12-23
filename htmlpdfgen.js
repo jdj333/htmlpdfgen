@@ -1,6 +1,6 @@
-//Author James Jenkins
+// Author James Jenkins
 
-var htmlpdfgen = function(element) {
+var htmlpdfgen = function (element) {
 		var html = document.getElementsByClassName(element);
 	  var pdfData = "data:application/pdf;base64,";
 		var creationDate = new Date();
@@ -35,7 +35,7 @@ var htmlpdfgen = function(element) {
 		            "9.2 TL\r\n" +
 		            "0 g\r\n" +
 		            "40.00 752.00 Td\r\n" +
-		            "("+headerUrl+"https://www.example.org) Tj\r\n" +
+		            "("+headerUrl+") Tj\r\n" +
 		            "ET\r\n" +
 		            "q\r\n" +
 		            "q BT 0 g 40.00 725.50 Td\r\n" +
@@ -217,4 +217,4 @@ var htmlpdfgen = function(element) {
 };
 
 //triggers htmlpdfgen
-htmlpdfgen(".pdf-area");
+//htmlpdfgen(".pdf-area");
