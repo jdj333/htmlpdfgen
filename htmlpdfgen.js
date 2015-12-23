@@ -1,14 +1,15 @@
 //Author James Jenkins
 
-var createPDF = function(element) {
+var htmlpdfgen = function(element) {
 		var html = document.getElementsByClassName(element);
 	  var pdfData = "data:application/pdf;base64,";
 		//canvas width & height
 		var pdfWidth = "612.00";
 		var pdfHeight = "792.00";
-		var pversion = '1.3'
-	  var pdfScript = "%PDF-"+pversion +"\r\n";
-
+		//compatibility version
+		var pdfVersion = '1.3';
+	  var pdfScript = "%PDF-"+pdfVersion +"\r\n";
+		var headerUrl = "https://www.example.org";
 	  pdfScript +=
 		            "3 0 obj\r\n" +
 		            "<</Type /Page\r\n" +
@@ -31,7 +32,7 @@ var createPDF = function(element) {
 		            "9.2 TL\r\n" +
 		            "0 g\r\n" +
 		            "40.00 752.00 Td\r\n" +
-		            "(https://www.example.org) Tj\r\n" +
+		            "("+headerUrl+"https://www.example.org"") Tj\r\n" +
 		            "ET\r\n" +
 		            "q\r\n" +
 		            "q BT 0 g 40.00 725.50 Td\r\n" +
@@ -185,4 +186,5 @@ var createPDF = function(element) {
 		window.open(pdfData,"_blank");
 };
 
-createPDF(".pdf-area");
+//triggers htmlpdfgen
+htmlpdfgen(".pdf-area");
