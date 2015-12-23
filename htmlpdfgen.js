@@ -3,6 +3,7 @@
 var htmlpdfgen = function(element) {
 		var html = document.getElementsByClassName(element);
 	  var pdfData = "data:application/pdf;base64,";
+		var creationDate = new Date();
 		//canvas width & height
 		var pdfWidth = "612.00";
 		var pdfHeight = "792.00";
@@ -32,13 +33,19 @@ var htmlpdfgen = function(element) {
 		            "9.2 TL\r\n" +
 		            "0 g\r\n" +
 		            "40.00 752.00 Td\r\n" +
-		            "("+headerUrl+"https://www.example.org"") Tj\r\n" +
+		            "("+headerUrl+"https://www.example.org) Tj\r\n" +
 		            "ET\r\n" +
 		            "q\r\n" +
 		            "q BT 0 g 40.00 725.50 Td\r\n" +
 		            "0 -29.70 Td\r\n" +
+
+								//font color
 		            "0.400 0.400 0.400 rg\r\n" +
-		            "/F1 24.75 Tf (text 1 ) Tj\r\n" +
+								//font #, font size, (text output)
+								"/F1 24.75 Tf (text 1) Tj\r\n" +
+								"ET Q\r\n" +
+								"q BT 0 g 40.00 679.30 Td\r\n" +
+								"0 -29.70 Td\r\n" +
 		            "/F1 24.75 Tf (text 2 ) Tj\r\n" +
 		            "ET Q\r\n" +
 		            "Q\r\n" +
@@ -138,7 +145,7 @@ var htmlpdfgen = function(element) {
 		            "17 0 obj\r\n" +
 		            "<<\r\n" +
 		            "/Producer (pdfGen jamesjenkins)\r\n" +
-		            "/CreationDate (D:20151223125803-07'00')\r\n" +
+		            "/CreationDate (D:"+creationDate+")\r\n" +
 		            ">>\r\n" +
 		            "endobj\r\n" +
 		            "18 0 obj\r\n" +
