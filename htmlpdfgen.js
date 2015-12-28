@@ -1,7 +1,9 @@
 // Author James Jenkins
 
-var htmlpdfgen = function (element) {
-		var html = document.getElementsByClassName(element);
+function htmlpdfgen(elements) {
+		console.log(elements);
+		//var elements = document.getElementByClassName("pdf-area").getElementsByTagName("div");
+
 	  var pdfData = "data:application/pdf;base64,";
 		var creationDate = new Date();
 		//canvas width & height
@@ -20,7 +22,6 @@ var htmlpdfgen = function (element) {
 		"/Contents 4 0 R\r\n" +
 		">>\r\n" +
 		"endobj\r\n" +
-
 		"4 0 obj\r\n" +
 		//TODO: make length value dynamic
 		"<</Length 196>>\r\n" +
@@ -38,38 +39,27 @@ var htmlpdfgen = function (element) {
 		"ET\r\n" +
 		"q\r\n" +
 		"q BT 0 g 40.00 725.50 Td\r\n" +
-		"0 -29.70 Td\r\n" +
+		"0 -29.70 Td\r\n";
 
-		//font color (red)
-		"1.000 0.000 0.000 rg\r\n" +
-		//font #, font size, (text output)
-		"/F1 24.75 Tf (text 1) Tj\r\n" +
-		"ET Q\r\n" +
-		//point x y
-		"q BT 0 g 40.00 679.30 Td\r\n" +
-		//margin
-		"0 -29.70 Td\r\n" +
+		var xcoord = 40.00;
+		var ycoord = 679.30;
+		var yoffset = 46.20;
+		for (var i = 0; i < elements.length; i++) {
+		    //console.log(elements[i].innerHTML);
+				pdfScript +=
+				//font color (red)
+				//"1.000 0.000 0.000 rg\r\n" +
+				//font #, font size, (text output)
+				"/F1 24.75 Tf (" + elements[i].innerHTML + ") Tj\r\n" +
+				"ET Q\r\n" +
+				//point x y
+				"q BT 0 g 40.00 " + ycoord + " Td\r\n" +
+				//margin
+				"0 -29.70 Td\r\n";
+				ycoord -= yoffset;
+		}
 
-		//font color (green)
-		"0.000 1.000 0.000 rg\r\n" +
-		//font #, font size, (text output)
-		"/F1 24.75 Tf (text 2 ) Tj\r\n" +
-		"ET Q\r\n" +
-		//point x y
-		"q BT 0 g 40.00 633.10 Td\r\n" +
-		//margin
-		"0 -29.70 Td\r\n" +
-
-		//font color (blue)
-		"0.000 0.000 1.000 rg\r\n" +
-		//font #, font size, (text output)
-		"/F1 24.75 Tf (text 3 ) Tj\r\n" +
-		"ET Q\r\n" +
-		//point x y
-		"q BT 0 g 40.00 586.90 Td\r\n" +
-		//margin
-		"0 -29.70 Td\r\n" +
-
+		pdfScript +=
 		"Q\r\n" +
 		"endstream\r\n" +
 		"endobj\r\n" +

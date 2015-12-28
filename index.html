@@ -3,16 +3,25 @@
   <head>
   <meta charset="UTF-8">
   <title>HTML PDF Generator</title>
-  <script type="text/javascript" src="htmlpdfgen.js"></script>
+
   </head>
   <body>
 
-      <div class="pdf-area">
+      <div class="pdf-area" id="pdf-area">
           <h1>HTML PDF Generator</h1>
           <p>Click the button below to generate a pdf.</p>
       </div>
 
-      <button onClick="htmlpdfgen();">Generate Pdf</button>
-
+      <button onClick="createPdf();">Generate Pdf</button>
+      <script type="text/javascript" src="htmlpdfgen.js"></script>
+      <script type="text/javascript">
+      var elements;
+      (function() {
+       elements = document.getElementById("pdf-area").getElementsByTagName("*");
+      })();
+      function createPdf(){
+        htmlpdfgen(elements);
+      }
+      </script>
   </body>
 </html>
