@@ -45,18 +45,46 @@ function htmlpdfgen(elements) {
 		var ycoord = 679.30;
 		var yoffset = 46.20;
 		for (var i = 0; i < elements.length; i++) {
-		    //console.log(elements[i].innerHTML);
+			tagName = elements[i].tagName;
+			fontColor = elements[i].style.color;
+			content = elements[i].innerHTML;
+			recognizedElement = false;
+			//get/set font color
+			if(fontColor == 'red') {
+				pdfScript += "1.000 0.000 0.000 rg\r\n";
+			} else if(fontColor == 'green') {
+				pdfScript += "0.000 1.000 0.000 rg\r\n";
+			} else if(fontColor == 'blue') {
+				pdfScript += "0.000 0.000 1.000 rg\r\n";
+			} else {
+				pdfScript += "0.000 0.000 0.000 rg\r\n"; //black
+			}
+
+			//set font sizes based on tagName
+			if(tagName == "H1") {
+				pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
+				recognizedElement = true;
+			} else if(tagName == "H2") {
+				pdfScript += "/F1 21.75 Tf (" + content + ") Tj\r\n";
+				recognizedElement = true;
+			} else if(tagName == "P") {
+				pdfScript += "/F1 12.75 Tf (" + content + ") Tj\r\n";
+				recognizedElement = true;
+			} else {
+				// do not render other elements...
+				recognizedElement = false;
+			}
+
+			if(recognizedElement==true) {
 				pdfScript +=
-				//font color (red)
-				//"1.000 0.000 0.000 rg\r\n" +
-				//font #, font size, (text output)
-				"/F1 24.75 Tf (" + elements[i].innerHTML + ") Tj\r\n" +
 				"ET Q\r\n" +
 				//point x y
 				"q BT 0 g 40.00 " + ycoord + " Td\r\n" +
 				//margin
 				"0 -29.70 Td\r\n";
 				ycoord -= yoffset;
+			}
+
 		}
 
 		pdfScript +=

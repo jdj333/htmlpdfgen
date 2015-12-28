@@ -3,13 +3,26 @@
   <head>
   <meta charset="UTF-8">
   <title>HTML PDF Generator</title>
-
+  <style>
+  #pdf-area {
+    border: 1px solid gray;
+    padding:20px;
+    margin:20px 0;
+  }
+  </style>
   </head>
   <body>
 
-      <div class="pdf-area" id="pdf-area">
+      <p>The boxed area below will generate a pdf.</p>
+
+      <div id="pdf-area">
           <h1>HTML PDF Generator</h1>
-          <p>Click the button below to generate a pdf.</p>
+          <h2>Secondary Header</h2>
+          <p>Paragraph 1</p>
+          <p>Paragraph 2</p>
+          <p>Paragraph 3</p>
+          <p>Paragraph 4</p>
+          <p>Paragraph 5</p>
       </div>
 
       <button onClick="createPdf();">Generate Pdf</button>
@@ -20,6 +33,11 @@
        elements = document.getElementById("pdf-area").getElementsByTagName("*");
       })();
       function createPdf(){
+        // for (var i = 0; i < elements.length; i++) {
+    		//     console.log(elements[i].style.color);
+    		// 		//elements[i].innerHTML
+        //     //elements[i].
+    		// }
         htmlpdfgen(elements);
       }
       </script>
