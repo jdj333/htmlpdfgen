@@ -48,7 +48,8 @@ function htmlpdfgen(elements) {
 			tagName = elements[i].tagName;
 			fontColor = elements[i].style.color;
 			content = elements[i].innerHTML;
-			recognizedElement = false;
+			recognizedElement = true;
+
 			//get/set font color
 			if(fontColor == 'red') {
 				pdfScript += "1.000 0.000 0.000 rg\r\n";
@@ -63,13 +64,10 @@ function htmlpdfgen(elements) {
 			//set font sizes based on tagName
 			if(tagName == "H1") {
 				pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
-				recognizedElement = true;
 			} else if(tagName == "H2") {
 				pdfScript += "/F1 21.75 Tf (" + content + ") Tj\r\n";
-				recognizedElement = true;
 			} else if(tagName == "P") {
 				pdfScript += "/F1 12.75 Tf (" + content + ") Tj\r\n";
-				recognizedElement = true;
 			} else {
 				// do not render other elements...
 				recognizedElement = false;
