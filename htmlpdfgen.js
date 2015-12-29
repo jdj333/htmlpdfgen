@@ -13,8 +13,10 @@ function htmlpdfgen(elements) {
 		var pdfVersion = '1.3';
 	  var pdfScript = "%PDF-"+pdfVersion +"\r\n";
 		var headerUrl = "https://www.example.org";
-	  pdfScript +=
-		"3 0 obj\r\n" +
+
+
+		pdfScript +=
+		"3 0 obj\r\n" + //object 3
 		"<</Type /Page\r\n" +
 		"/Parent 1 0 R\r\n" +
 		"/Resources 2 0 R\r\n" +
@@ -22,7 +24,7 @@ function htmlpdfgen(elements) {
 		"/Contents 4 0 R\r\n" +
 		">>\r\n" +
 		"endobj\r\n" +
-		"4 0 obj\r\n" +
+		"4 0 obj\r\n" + //object 4
 		//TODO: make length value dynamic
 		"<</Length 196>>\r\n" +
 
@@ -44,10 +46,14 @@ function htmlpdfgen(elements) {
 		var xcoord = 40.00;
 		var ycoord = 679.30;
 		var yoffset = 46.20;
+		var yoffsetparagraph = 16.80;
+    var content = "";
+		console.log(elements.length);
 		for (var i = 0; i < elements.length; i++) {
 			tagName = elements[i].tagName;
 			fontColor = elements[i].style.color;
 			content = elements[i].innerHTML;
+			console.log("content: " + content);
 			recognizedElement = true;
 
 			//get/set font color
@@ -63,11 +69,37 @@ function htmlpdfgen(elements) {
 
 			//set font sizes based on tagName
 			if(tagName == "H1") {
-				pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
+					console.log("H1 content length: " + content.length);
+					pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "H2") {
-				pdfScript += "/F1 21.75 Tf (" + content + ") Tj\r\n";
+				  console.log("H2 content length: " + content.length);
+				  pdfScript += "/F1 21.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "P") {
-				pdfScript += "/F1 12.75 Tf (" + content + ") Tj\r\n";
+					console.log("P content length: " + content.length);
+
+					var charStart = 0;
+					var slicedContent;
+
+					while(content.length > charStart) {
+						slicedContent = content.slice(charStart, charStart + 90);
+						charStart += 90;
+						nextSlicedContent = content.slice(charStart, charStart + 90);
+
+						nextStart = nextSlicedContent.charAt(0);
+						end = slicedContent.charAt(slicedContent.length -1);
+
+						slicedContent = slicedContent.trim();
+						if(end.indexOf(' ') === -1 && nextStart.indexOf(' ') === -1 && nextStart !== ''){
+									slicedContent += '-';
+						}
+
+						pdfScript += "/F1 12.75 Tf (" + slicedContent + ") Tj\r\n";
+						pdfScript +=
+						"ET Q\r\n" +
+						"q BT 0 g 40.00 " + ycoord + " Td\r\n";
+						ycoord -= yoffsetparagraph;
+					}
+
 			} else {
 				// do not render other elements...
 				recognizedElement = false;
@@ -76,9 +108,7 @@ function htmlpdfgen(elements) {
 			if(recognizedElement==true) {
 				pdfScript +=
 				"ET Q\r\n" +
-				//point x y
 				"q BT 0 g 40.00 " + ycoord + " Td\r\n" +
-				//margin
 				"0 -29.70 Td\r\n";
 				ycoord -= yoffset;
 			}
@@ -91,39 +121,31 @@ function htmlpdfgen(elements) {
 		"endobj\r\n" +
 		"1 0 obj\r\n" +
 		"<</Type /Pages\r\n" +
-		"/Kids [3 0 R ]\r\n" +
+		"/Kids [3 0 R]\r\n" +
 		"/Count 1\r\n" +
 		">>\r\n" +
-		"endobj\r\n" +
+		"endobj\r\n";
 
+
+		pdfScript +=
 		//fonts
-		"5 0 obj\r\n" +
+		"7 0 obj\r\n" +
 		"<</BaseFont/Helvetica/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
 		"endobj\r\n" +
-		"6 0 obj\r\n" +
+		"8 0 obj\r\n" +
 		"<</BaseFont/Helvetica-Bold/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
 		"endobj\r\n" +
-		"7 0 obj\r\n" +
+		"9 0 obj\r\n" +
 		"<</BaseFont/Helvetica-Oblique/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
 		"endobj\r\n" +
-		"8 0 obj\r\n" +
-		"<</BaseFont/Helvetica-BoldOblique/Type/Font\r\n" +
-		"/Encoding/WinAnsiEncoding\r\n" +
-		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"9 0 obj\r\n" +
-		"<</BaseFont/Courier/Type/Font\r\n" +
-		"/Encoding/WinAnsiEncoding\r\n" +
-		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
 		"10 0 obj\r\n" +
-		"<</BaseFont/Courier-Bold/Type/Font\r\n" +
+		"<</BaseFont/Helvetica-BoldOblique/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
 		"endobj\r\n" +
@@ -163,18 +185,16 @@ function htmlpdfgen(elements) {
 		"<<\r\n" +
 		"/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]\r\n" +
 		"/Font <<\r\n" +
-		"/F1 5 0 R\r\n" +
-		"/F2 6 0 R\r\n" +
-		"/F3 7 0 R\r\n" +
-		"/F4 8 0 R\r\n" +
-		"/F5 9 0 R\r\n" +
-		"/F6 10 0 R\r\n" +
-		"/F7 11 0 R\r\n" +
-		"/F8 12 0 R\r\n" +
-		"/F9 13 0 R\r\n" +
-		"/F10 14 0 R\r\n" +
-		"/F11 15 0 R\r\n" +
-		"/F12 16 0 R\r\n" +
+		"/F1 7 0 R\r\n" +
+		"/F2 8 0 R\r\n" +
+		"/F3 9 0 R\r\n" +
+		"/F4 10 0 R\r\n" +
+		"/F5 11 0 R\r\n" +
+		"/F6 12 0 R\r\n" +
+		"/F7 13 0 R\r\n" +
+		"/F8 14 0 R\r\n" +
+		"/F9 15 0 R\r\n" +
+		"/F10 16 0 R\r\n" +
 		">>\r\n" +
 		"/XObject <<\r\n" +
 		">>\r\n" +
@@ -195,7 +215,7 @@ function htmlpdfgen(elements) {
 		">>\r\n" +
 		"endobj\r\n" +
 		"xref\r\n" +
-		"0 19\r\n" +
+		"0 21\r\n" +
 		"0000000000 65535 f\r\n" +
 		"0000000364 00000 n\r\n" +
 		"0000001563 00000 n\r\n" +
@@ -215,9 +235,12 @@ function htmlpdfgen(elements) {
 		"0000001465 00000 n\r\n" +
 		"0000001787 00000 n\r\n" +
 		"0000001906 00000 n\r\n" +
+		"0000002106 00000 n\r\n" +
+		"0000002306 00000 n\r\n" +
+		"0000002506 00000 n\r\n" +
 		"trailer\r\n" +
 		"<<\r\n" +
-		"/Size 19\r\n" +
+		"/Size 21\r\n" +
 		"/Root 18 0 R\r\n" +
 		"/Info 17 0 R\r\n" +
 		">>\r\n" +
@@ -225,7 +248,7 @@ function htmlpdfgen(elements) {
 		"2010\r\n";
 		// pdf end of file
 		pdfScript += "%%EOF";
-
+		//console.log(pdfScript);
 		pdfData += btoa(pdfScript);
 
 		window.open(pdfData,"_blank");
