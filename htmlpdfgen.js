@@ -64,13 +64,16 @@ function htmlpdfgen(elements) {
 
 			//set font sizes based on tagName
 			if(tagName == "H1") {
-					console.log("H1 content length: " + content.length);
 					pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "H2") {
-				  console.log("H2 content length: " + content.length);
 				  pdfScript += "/F1 21.75 Tf (" + content + ") Tj\r\n";
+			} else if(tagName == "H3") {
+					pdfScript += "/F1 18.75 Tf (" + content + ") Tj\r\n";
+			} else if(tagName == "H4") {
+					pdfScript += "/F1 16.75 Tf (" + content + ") Tj\r\n";
+			} else if(tagName == "H5") {
+						pdfScript += "/F1 14.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "P") {
-					console.log("P content length: " + content.length);
 
 					var charStart = 0;
 					var slicedContent;
@@ -333,7 +336,7 @@ function htmlpdfgen(elements) {
 		pdfScript += "%%EOF";
 		console.log(pdfScript);
 		pdfData += btoa(pdfScript);
-
+		localStorage.setItem('pdfbase64', pdfData);
 		window.open(pdfData,"_blank");
 };
 
