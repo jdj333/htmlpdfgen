@@ -1,8 +1,6 @@
 // Author James Jenkins
 
 function htmlpdfgen(elements) {
-		//var elements = document.getElementByClassName("pdf-area").getElementsByTagName("div");
-
 	  var pdfData = "data:application/pdf;base64,";
 		var creationDate = new Date();
 		//canvas width & height
@@ -13,10 +11,10 @@ function htmlpdfgen(elements) {
 	  var pdfScript = "%PDF-"+pdfVersion +"\r\n";
 		var headerUrl = "https://www.example.org";
 		var pageCount = 1;
-
+		var objectNum = 3;
 
 		pdfScript +=
-		"3 0 obj\r\n" + //object 3
+		objectNum + " 0 obj\r\n" + //object 3
 		"<</Type /Page\r\n" +
 		"/Parent 1 0 R\r\n" +
 		"/Resources 2 0 R\r\n" +
@@ -26,7 +24,7 @@ function htmlpdfgen(elements) {
 		"endobj\r\n" +
 		"4 0 obj\r\n" + //object 4
 		//TODO: make length value dynamic
-		"<</Length 196>>\r\n" +
+		"<</Length 1490>>\r\n" +
 		//start stream
 		"stream\r\n" +
 		"0.20 w\r\n" +
@@ -108,7 +106,6 @@ function htmlpdfgen(elements) {
 							"endobj\r\n" +
 							"5 0 obj\r\n" +
 							"<</Type /Page\r\n" +
-							"<</Type /Page\r\n" +
 							"/Parent 1 0 R\r\n" +
 							"/Resources 2 0 R\r\n" +
 							"/MediaBox [0 0 "+pdfWidth+" "+pdfHeight+"]\r\n" +
@@ -119,7 +116,7 @@ function htmlpdfgen(elements) {
 							pdfScript +=
 							"6 0 obj\r\n" + //object 4
 							//TODO: make length value dynamic
-							"<</Length 196>>\r\n" +
+							"<</Length 1490>>\r\n" +
 							//start stream
 							"stream\r\n" +
 							"0.20 w\r\n" +
@@ -162,7 +159,7 @@ function htmlpdfgen(elements) {
 				"ET Q\r\n" +
 				"endstream\r\n" +
 				"endobj\r\n" +
-				"5 0 obj\r\n" +
+				"5 0 obj\r\n" + //object 5
 				"<</Type /Page\r\n" +
 				"<</Type /Page\r\n" +
 				"/Parent 1 0 R\r\n" +
@@ -173,9 +170,9 @@ function htmlpdfgen(elements) {
 				"endobj\r\n";
 				//start new stream
 				pdfScript +=
-				"6 0 obj\r\n" + //object 4
+				"6 0 obj\r\n" + //object 6
 				//TODO: make length value dynamic
-				"<</Length 196>>\r\n" +
+				"<</Length 1490>>\r\n" +
 				//start stream
 				"stream\r\n" +
 				"0.20 w\r\n" +
@@ -196,6 +193,7 @@ function htmlpdfgen(elements) {
 			//end stream if last element
 			if(i == elements.length -1){
 				pdfScript +=
+				"ET Q\r\n" +
 				"Q\r\n" +
 				"endstream\r\n" +
 				"endobj\r\n" +
