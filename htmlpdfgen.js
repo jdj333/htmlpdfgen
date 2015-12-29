@@ -1,7 +1,6 @@
 // Author James Jenkins
 
 function htmlpdfgen(elements) {
-		console.log(elements);
 		//var elements = document.getElementByClassName("pdf-area").getElementsByTagName("div");
 
 	  var pdfData = "data:application/pdf;base64,";
@@ -13,6 +12,7 @@ function htmlpdfgen(elements) {
 		var pdfVersion = '1.3';
 	  var pdfScript = "%PDF-"+pdfVersion +"\r\n";
 		var headerUrl = "https://www.example.org";
+		var pageCount = 1;
 
 
 		pdfScript +=
@@ -27,7 +27,6 @@ function htmlpdfgen(elements) {
 		"4 0 obj\r\n" + //object 4
 		//TODO: make length value dynamic
 		"<</Length 196>>\r\n" +
-
 		//start stream
 		"stream\r\n" +
 		"0.20 w\r\n" +
@@ -48,12 +47,10 @@ function htmlpdfgen(elements) {
 		var yoffset = 46.20;
 		var yoffsetparagraph = 16.80;
     var content = "";
-		console.log(elements.length);
 		for (var i = 0; i < elements.length; i++) {
 			tagName = elements[i].tagName;
 			fontColor = elements[i].style.color;
 			content = elements[i].innerHTML;
-			console.log("content: " + content);
 			recognizedElement = true;
 
 			//get/set font color
@@ -98,6 +95,48 @@ function htmlpdfgen(elements) {
 						"ET Q\r\n" +
 						"q BT 0 g 40.00 " + ycoord + " Td\r\n";
 						ycoord -= yoffsetparagraph;
+
+						//start new page if element y position has reached bottom
+						//reset y to top
+						if(ycoord < 60.00) {
+							var ycoord = 679.30;
+							pageCount++;
+							//end stream
+							pdfScript +=
+							"ET Q\r\n" +
+							"endstream\r\n" +
+							"endobj\r\n" +
+							"5 0 obj\r\n" +
+							"<</Type /Page\r\n" +
+							"<</Type /Page\r\n" +
+							"/Parent 1 0 R\r\n" +
+							"/Resources 2 0 R\r\n" +
+							"/MediaBox [0 0 "+pdfWidth+" "+pdfHeight+"]\r\n" +
+							"/Contents 6 0 R\r\n" +
+							">>\r\n" +
+							"endobj\r\n";
+							//start new stream
+							pdfScript +=
+							"6 0 obj\r\n" + //object 4
+							//TODO: make length value dynamic
+							"<</Length 196>>\r\n" +
+							//start stream
+							"stream\r\n" +
+							"0.20 w\r\n" +
+							"0 G\r\n" +
+							"BT\r\n" +
+							"/F1 8 Tf\r\n" +
+							"9.2 TL\r\n" +
+							"0 g\r\n" +
+							"40.00 752.00 Td\r\n" +
+							"("+headerUrl+") Tj\r\n" +
+							"ET\r\n" +
+							"q\r\n" +
+							"q BT 0 g 40.00 725.50 Td\r\n" +
+							"0 -29.70 Td\r\n";
+						}
+
+
 					}
 
 			} else {
@@ -113,18 +152,64 @@ function htmlpdfgen(elements) {
 				ycoord -= yoffset;
 			}
 
+			//start new page if element y position has reached bottom
+			//reset y to top
+			if(ycoord < 60.00) {
+				var ycoord = 679.30;
+				pageCount++;
+				//end stream
+				pdfScript +=
+				"ET Q\r\n" +
+				"endstream\r\n" +
+				"endobj\r\n" +
+				"5 0 obj\r\n" +
+				"<</Type /Page\r\n" +
+				"<</Type /Page\r\n" +
+				"/Parent 1 0 R\r\n" +
+				"/Resources 2 0 R\r\n" +
+				"/MediaBox [0 0 "+pdfWidth+" "+pdfHeight+"]\r\n" +
+				"/Contents 6 0 R\r\n" +
+				">>\r\n" +
+				"endobj\r\n";
+				//start new stream
+				pdfScript +=
+				"6 0 obj\r\n" + //object 4
+				//TODO: make length value dynamic
+				"<</Length 196>>\r\n" +
+				//start stream
+				"stream\r\n" +
+				"0.20 w\r\n" +
+				"0 G\r\n" +
+				"BT\r\n" +
+				"/F1 8 Tf\r\n" +
+				"9.2 TL\r\n" +
+				"0 g\r\n" +
+				"40.00 752.00 Td\r\n" +
+				"("+headerUrl+") Tj\r\n" +
+				"ET\r\n" +
+				"q\r\n" +
+				"q BT 0 g 40.00 725.50 Td\r\n" +
+				"0 -29.70 Td\r\n";
+			}
+
+
+			//end stream if last element
+			if(i == elements.length -1){
+				pdfScript +=
+				"Q\r\n" +
+				"endstream\r\n" +
+				"endobj\r\n" +
+				"1 0 obj\r\n" +
+				"<</Type /Pages\r\n" +
+				"/Kids [3 0 R 5 0 R]\r\n" +
+				"/Count "+pageCount+"\r\n" +
+				">>\r\n" +
+				"endobj\r\n";
+			}
+
 		}
 
-		pdfScript +=
-		"Q\r\n" +
-		"endstream\r\n" +
-		"endobj\r\n" +
-		"1 0 obj\r\n" +
-		"<</Type /Pages\r\n" +
-		"/Kids [3 0 R]\r\n" +
-		"/Count 1\r\n" +
-		">>\r\n" +
-		"endobj\r\n";
+
 
 
 		pdfScript +=
@@ -248,7 +333,7 @@ function htmlpdfgen(elements) {
 		"2010\r\n";
 		// pdf end of file
 		pdfScript += "%%EOF";
-		//console.log(pdfScript);
+		console.log(pdfScript);
 		pdfData += btoa(pdfScript);
 
 		window.open(pdfData,"_blank");
