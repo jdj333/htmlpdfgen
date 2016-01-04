@@ -210,7 +210,6 @@ function htmlpdfgen(elements) {
 				"0 -59.70 Td\r\n";
 			}
 
-
 			//end stream if last element
 			if(i == elements.length -1){
 				pdfScript +=
@@ -227,8 +226,6 @@ function htmlpdfgen(elements) {
 			}
 
 		}
-
-
 
 
 		pdfScript +=
