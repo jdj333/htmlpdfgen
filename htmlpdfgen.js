@@ -37,12 +37,12 @@ function htmlpdfgen(elements) {
 		"("+headerUrl+") Tj\r\n" +
 		"ET\r\n" +
 		"q\r\n" +
-		"q BT 0 g 40.00 725.50 Td\r\n" +
+		"q BT 0 g 40.00 765.50 Td\r\n" +
 		"0 -29.70 Td\r\n";
 
 		var xcoord = 40.00;
-		var ycoord = 679.30;
-		var yoffset = 46.20;
+		var ycoord = 719.30;
+		var yoffset = 36.20;
 		var yoffsetparagraph = 16.80;
     var content = "";
 		for (var i = 0; i < elements.length; i++) {
@@ -63,7 +63,26 @@ function htmlpdfgen(elements) {
 			}
 
 			//set font sizes based on tagName
-			if(tagName == "H1") {
+			if(tagName == "IMG") {
+
+					// pdfScript +=
+					// "<<\r\n" +
+					// "/Type     /XObject\r\n" +
+					// "/Subtype     /Image\r\n" +
+					// "/Height     200\r\n" +
+					// "/Width     400\r\n" +
+					// "/ColorSpace     /DeviceRGB\r\n" +
+					// "/BitsPerComponent     8\r\n" +
+					// "/Length     16423\r\n" +
+					// ">>\r\n"
+					// ">>\r\n"
+					// ;
+
+
+
+
+
+			} else if(tagName == "H1") {
 					pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "H2") {
 				  pdfScript += "/F1 21.75 Tf (" + content + ") Tj\r\n";
@@ -72,7 +91,7 @@ function htmlpdfgen(elements) {
 			} else if(tagName == "H4") {
 					pdfScript += "/F1 16.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "H5") {
-						pdfScript += "/F1 14.75 Tf (" + content + ") Tj\r\n";
+						pdfScript += "/F1 16.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "P") {
 
 					var charStart = 0;
@@ -100,7 +119,7 @@ function htmlpdfgen(elements) {
 						//start new page if element y position has reached bottom
 						//reset y to top
 						if(ycoord < 60.00) {
-							var ycoord = 679.30;
+							var ycoord = 719.30;
 							pageCount++;
 							//end stream
 							pdfScript +=
@@ -148,7 +167,7 @@ function htmlpdfgen(elements) {
 				pdfScript +=
 				"ET Q\r\n" +
 				"q BT 0 g 40.00 " + ycoord + " Td\r\n" +
-				"0 -29.70 Td\r\n";
+				"0 -19.70 Td\r\n";
 				ycoord -= yoffset;
 			}
 
@@ -339,6 +358,3 @@ function htmlpdfgen(elements) {
 		localStorage.setItem('pdfbase64', pdfData);
 		window.open(pdfData,"_blank");
 };
-
-//triggers htmlpdfgen
-//htmlpdfgen(".pdf-area");
