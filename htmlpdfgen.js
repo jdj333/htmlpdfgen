@@ -114,7 +114,7 @@ function htmlpdfgen(elements) {
 						pdfScript +=
 						"ET Q\r\n" +
 						"q BT 0 g 40.00 " + ycoord + " Td\r\n";
-						ycoord -= yoffsetparagraph;
+						ycoord -= yoffsetparagraph.toFixed(2);
 
 						//start new page if element y position has reached bottom
 						//reset y to top
@@ -148,10 +148,9 @@ function htmlpdfgen(elements) {
 							"9.2 TL\r\n" +
 							"0 g\r\n" +
 							"40.00 752.00 Td\r\n" +
-							"("+headerUrl+") Tj\r\n" +
 							"ET\r\n" +
 							"q\r\n" +
-							"q BT 0 g 40.00 725.50 Td\r\n" +
+							"q BT 0 g 40.00 765.50 Td\r\n" +
 							"0 -29.70 Td\r\n";
 						}
 
@@ -208,7 +207,7 @@ function htmlpdfgen(elements) {
 				"ET\r\n" +
 				"q\r\n" +
 				"q BT 0 g 40.00 725.50 Td\r\n" +
-				"0 -29.70 Td\r\n";
+				"0 -59.70 Td\r\n";
 			}
 
 
