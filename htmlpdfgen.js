@@ -119,7 +119,7 @@ function htmlpdfgen(elements) {
 						//start new page if element y position has reached bottom
 						//reset y to top
 						if(ycoord < 60.00) {
-							var ycoord = 719.30;
+							ycoord = 719.30;
 							pageCount++;
 							//end stream
 							pdfScript +=
@@ -147,7 +147,7 @@ function htmlpdfgen(elements) {
 							"/F1 8 Tf\r\n" +
 							"9.2 TL\r\n" +
 							"0 g\r\n" +
-							"40.00 752.00 Td\r\n" +
+							"40.00 765.00 Td\r\n" +
 							"ET\r\n" +
 							"q\r\n" +
 							"q BT 0 g 40.00 765.50 Td\r\n" +
@@ -203,10 +203,9 @@ function htmlpdfgen(elements) {
 				"9.2 TL\r\n" +
 				"0 g\r\n" +
 				"40.00 752.00 Td\r\n" +
-				"("+headerUrl+") Tj\r\n" +
 				"ET\r\n" +
 				"q\r\n" +
-				"q BT 0 g 40.00 725.50 Td\r\n" +
+				"q BT 0 g 40.00 756.00 Td\r\n" +
 				"0 -59.70 Td\r\n";
 			}
 
@@ -226,6 +225,8 @@ function htmlpdfgen(elements) {
 			}
 
 		}
+
+
 
 
 		pdfScript +=
@@ -318,27 +319,25 @@ function htmlpdfgen(elements) {
 		"xref\r\n" +
 		"0 21\r\n" +
 		"0000000000 65535 f\r\n" +
-		"0000000364 00000 n\r\n" +
-		"0000001563 00000 n\r\n" +
+		"0000000317 00000 n\r\n" +
+		"0000032678 00000 n\r\n" +
 		"0000000009 00000 n\r\n" +
 		"0000000118 00000 n\r\n" +
-		"0000000421 00000 n\r\n" +
-		"0000000511 00000 n\r\n" +
-		"0000000606 00000 n\r\n" +
-		"0000000704 00000 n\r\n" +
-		"0000000806 00000 n\r\n" +
-		"0000000894 00000 n\r\n" +
-		"0000000988 00000 n\r\n" +
-		"0000001085 00000 n\r\n" +
-		"0000001186 00000 n\r\n" +
-		"0000001279 00000 n\r\n" +
-		"0000001371 00000 n\r\n" +
-		"0000001465 00000 n\r\n" +
-		"0000001787 00000 n\r\n" +
-		"0000001906 00000 n\r\n" +
-		"0000002106 00000 n\r\n" +
-		"0000002306 00000 n\r\n" +
-		"0000002506 00000 n\r\n" +
+		"0000000374 00000 n\r\n" +
+		"0000000464 00000 n\r\n" +
+		"0000000559 00000 n\r\n" +
+		"0000000657 00000 n\r\n" +
+		"0000000759 00000 n\r\n" +
+		"0000000847 00000 n\r\n" +
+		"0000000941 00000 n\r\n" +
+		"0000001038 00000 n\r\n" +
+		"0000001139 00000 n\r\n" +
+		"0000001232 00000 n\r\n" +
+		"0000001324 00000 n\r\n" +
+		"0000001418 00000 n\r\n" +
+		"0000001516 00000 n\r\n" +
+		"0000032913 00000 n\r\n" +
+		"0000033032 00000 n\r\n" +
 		"trailer\r\n" +
 		"<<\r\n" +
 		"/Size 21\r\n" +
@@ -346,7 +345,7 @@ function htmlpdfgen(elements) {
 		"/Info 17 0 R\r\n" +
 		">>\r\n" +
 		"startxref\r\n" +
-		"2010\r\n";
+		"33136\r\n";
 		// pdf end of file
 		pdfScript += "%%EOF";
 		console.log(pdfScript);

@@ -17,8 +17,9 @@
   </style>
   <script type="text/javascript">
     window.onload = function() {
-        document.body.innerHTML += '<object data="' + localStorage.getItem("pdfbase64") + '"' + ' type="application/pdf"></object>';
+        //document.body.innerHTML += '<object data="' + localStorage.getItem("pdfbase64") + '"' + ' type="application/pdf"></object>';
     }
+    console.log(atob(localStorage.getItem("pdfbase64")));
   </script>
   </head>
   <body id='body'></body>
