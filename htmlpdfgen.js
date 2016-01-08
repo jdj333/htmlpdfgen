@@ -12,6 +12,8 @@ function htmlpdfgen(elements) {
 		var headerUrl = "https://www.example.org";
 		var pageCount = 1;
 		var objectNum = 3;
+		var fontObjectNum = 0;
+		var kids = "";
 
 		pdfScript +=
 		objectNum + " 0 obj\r\n" + //object 3
@@ -21,8 +23,10 @@ function htmlpdfgen(elements) {
 		"/MediaBox [0 0 "+pdfWidth+" "+pdfHeight+"]\r\n" +
 		"/Contents 4 0 R\r\n" +
 		">>\r\n" +
-		"endobj\r\n" +
-		"4 0 obj\r\n" + //object 4
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" + //object 4
 		//TODO: make length value dynamic
 		"<</Length 1490>>\r\n" +
 		//start stream
@@ -121,12 +125,17 @@ function htmlpdfgen(elements) {
 						if(ycoord < 60.00) {
 							ycoord = 719.30;
 							pageCount++;
-							//end stream
+							//end pag stream
+
+
 							pdfScript +=
 							"ET Q\r\n" +
 							"endstream\r\n" +
-							"endobj\r\n" +
-							"5 0 obj\r\n" +
+							"endobj\r\n";
+
+							objectNum++;
+							pdfScript +=
+							objectNum + " 0 obj\r\n" + // new page object
 							"<</Type /Page\r\n" +
 							"/Parent 1 0 R\r\n" +
 							"/Resources 2 0 R\r\n" +
@@ -135,8 +144,9 @@ function htmlpdfgen(elements) {
 							">>\r\n" +
 							"endobj\r\n";
 							//start new stream
+							objectNum++;
 							pdfScript +=
-							"6 0 obj\r\n" + //object 4
+							objectNum + " 0 obj\r\n" + // new page object
 							//TODO: make length value dynamic
 							"<</Length 1490>>\r\n" +
 							//start stream
@@ -179,9 +189,11 @@ function htmlpdfgen(elements) {
 				pdfScript +=
 				"ET Q\r\n" +
 				"endstream\r\n" +
-				"endobj\r\n" +
-				"5 0 obj\r\n" + //object 5
-				"<</Type /Page\r\n" +
+				"endobj\r\n";
+
+				objectNum++;
+				pdfScript +=
+				objectNum + " 0 obj\r\n" + // new page object 1
 				"<</Type /Page\r\n" +
 				"/Parent 1 0 R\r\n" +
 				"/Resources 2 0 R\r\n" +
@@ -190,8 +202,9 @@ function htmlpdfgen(elements) {
 				">>\r\n" +
 				"endobj\r\n";
 				//start new stream
+				objectNum++;
 				pdfScript +=
-				"6 0 obj\r\n" + //object 6
+				objectNum + " 0 obj\r\n" + // new page object 2
 				//TODO: make length value dynamic
 				"<</Length 1490>>\r\n" +
 				//start stream
@@ -216,99 +229,125 @@ function htmlpdfgen(elements) {
 				"Q\r\n" +
 				"endstream\r\n" +
 				"endobj\r\n" +
-				"1 0 obj\r\n" +
-				"<</Type /Pages\r\n" +
-				"/Kids [3 0 R 5 0 R]\r\n" +
+				"1 0 obj\r\n" + //object 1
+				"<</Type /Pages\r\n";
+
+				for (var j = 0; j < pageCount; j++) {
+				    kids += (3 + (j * 2)) + " 0 R ";
+				}
+				kids = kids.replace(/^\s+|\s+$/g,'');
+				pdfScript +=
+				"/Kids ["+kids+"]\r\n" +
 				"/Count "+pageCount+"\r\n" +
 				">>\r\n" +
 				"endobj\r\n";
 			}
 
 		}
-
-
-
-
-		pdfScript +=
 		//fonts
-		"7 0 obj\r\n" +
+		objectNum++;
+		fontObjectNum = objectNum;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Helvetica/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"8 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Helvetica-Bold/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"9 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Helvetica-Oblique/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"10 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Helvetica-BoldOblique/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"11 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Courier-Oblique/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"12 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Courier-BoldOblique/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"13 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Times-Roman/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"14 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Times-Bold/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"15 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Times-Italic/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
-		"16 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<</BaseFont/Times-BoldItalic/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
 		"endobj\r\n" +
 		//end fonts
 
-		"2 0 obj\r\n" +
+		"2 0 obj\r\n" + //object 2
 		"<<\r\n" +
 		"/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]\r\n" +
 		"/Font <<\r\n" +
-		"/F1 7 0 R\r\n" +
-		"/F2 8 0 R\r\n" +
-		"/F3 9 0 R\r\n" +
-		"/F4 10 0 R\r\n" +
-		"/F5 11 0 R\r\n" +
-		"/F6 12 0 R\r\n" +
-		"/F7 13 0 R\r\n" +
-		"/F8 14 0 R\r\n" +
-		"/F9 15 0 R\r\n" +
-		"/F10 16 0 R\r\n" +
+		"/F1 "+fontObjectNum+" 0 R\r\n" +
+		"/F2 "+(fontObjectNum + 1)+" 0 R\r\n" +
+		"/F3 "+(fontObjectNum + 2)+" 0 R\r\n" +
+		"/F4 "+(fontObjectNum + 3)+" 0 R\r\n" +
+		"/F5 "+(fontObjectNum + 4)+" 0 R\r\n" +
+		"/F6 "+(fontObjectNum + 5)+" 0 R\r\n" +
+		"/F7 "+(fontObjectNum + 6)+" 0 R\r\n" +
+		"/F8 "+(fontObjectNum + 7)+" 0 R\r\n" +
+		"/F9 "+(fontObjectNum + 8)+" 0 R\r\n" +
+		"/F10 "+(fontObjectNum + 9)+" 0 R\r\n" +
 		">>\r\n" +
 		"/XObject <<\r\n" +
 		">>\r\n" +
 		">>\r\n" +
-		"endobj\r\n" +
-		"17 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<<\r\n" +
 		"/Producer (pdfGen jamesjenkins)\r\n" +
 		"/CreationDate (D:"+creationDate+")\r\n" +
 		">>\r\n" +
-		"endobj\r\n" +
-		"18 0 obj\r\n" +
+		"endobj\r\n";
+		objectNum++;
+		pdfScript +=
+		objectNum + " 0 obj\r\n" +
 		"<<\r\n" +
 		"/Type /Catalog\r\n" +
 		"/Pages 1 0 R\r\n" +
@@ -341,14 +380,14 @@ function htmlpdfgen(elements) {
 		"trailer\r\n" +
 		"<<\r\n" +
 		"/Size 21\r\n" +
-		"/Root 18 0 R\r\n" +
+		"/Root "+objectNum+" 0 R\r\n" +
 		"/Info 17 0 R\r\n" +
 		">>\r\n" +
 		"startxref\r\n" +
 		"33136\r\n";
 		// pdf end of file
 		pdfScript += "%%EOF";
-		console.log(pdfScript);
+		//console.log(pdfScript);
 		pdfData += btoa(pdfScript);
 		localStorage.setItem('pdfbase64', pdfData);
 		window.open(pdfData,"_blank");
