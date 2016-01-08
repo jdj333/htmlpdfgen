@@ -12,8 +12,15 @@ function htmlpdfgen(elements) {
 		var headerUrl = "https://www.example.org";
 		var pageCount = 1;
 		var objectNum = 3;
+		var pageObjects = [3]; //starts with object 3
 		var fontObjectNum = 0;
 		var kids = "";
+		var imgCount = 0;
+		var xcoord = 40.00;
+		var ycoord = 700.00;
+		var yoffset = 36.20;
+		var yoffsetparagraph = 16.80;
+    var content = "";
 
 		pdfScript +=
 		objectNum + " 0 obj\r\n" + //object 3
@@ -37,18 +44,13 @@ function htmlpdfgen(elements) {
 		"/F1 8 Tf\r\n" +
 		"9.2 TL\r\n" +
 		"0 g\r\n" +
-		"40.00 752.00 Td\r\n" +
+		xcoord + " 752.00 Td\r\n" +
 		"("+headerUrl+") Tj\r\n" +
 		"ET\r\n" +
 		"q\r\n" +
-		"q BT 0 g 40.00 765.50 Td\r\n" +
-		"0 -29.70 Td\r\n";
+		"q BT 0 g "+xcoord+" 745.50 Td\r\n" +
+		"0 -40.70 Td\r\n";
 
-		var xcoord = 40.00;
-		var ycoord = 719.30;
-		var yoffset = 36.20;
-		var yoffsetparagraph = 16.80;
-    var content = "";
 		for (var i = 0; i < elements.length; i++) {
 			tagName = elements[i].tagName;
 			fontColor = window.getComputedStyle(elements[i], null).color;
@@ -65,23 +67,15 @@ function htmlpdfgen(elements) {
 
 			//set font sizes based on tagName
 			if(tagName == "IMG") {
+					//set image position & size
+					img = elements[i];
+					imgCount++;
 
-					// pdfScript +=
-					// "<<\r\n" +
-					// "/Type     /XObject\r\n" +
-					// "/Subtype     /Image\r\n" +
-					// "/Height     200\r\n" +
-					// "/Width     400\r\n" +
-					// "/ColorSpace     /DeviceRGB\r\n" +
-					// "/BitsPerComponent     8\r\n" +
-					// "/Length     16423\r\n" +
-					// ">>\r\n"
-					// ">>\r\n"
-					// ;
-
-
-
-
+					pdfScript +=
+					"q BT 0 g 40.00 " + ycoord + " Td\r\n" +
+					"q 400.00 0 0 200.00 40.00 "+(ycoord - (img.height-30))+" cm /I0 Do Q\r\n";
+					//ycoord offset & bottom margin
+					ycoord -= img.height;
 
 			} else if(tagName == "H1") {
 					pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
@@ -132,6 +126,7 @@ function htmlpdfgen(elements) {
 							"endobj\r\n";
 
 							objectNum++;
+							pageObjects.push(objectNum);
 							pdfScript +=
 							objectNum + " 0 obj\r\n" + // new page object
 							"<</Type /Page\r\n" +
@@ -190,6 +185,7 @@ function htmlpdfgen(elements) {
 				"endobj\r\n";
 
 				objectNum++;
+				pageObjects.push(objectNum); // add page object num
 				pdfScript +=
 				objectNum + " 0 obj\r\n" + // new page object 1
 				"<</Type /Page\r\n" +
@@ -230,9 +226,10 @@ function htmlpdfgen(elements) {
 				"1 0 obj\r\n" + //object 1
 				"<</Type /Pages\r\n";
 
-				for (var j = 0; j < pageCount; j++) {
-				    kids += (3 + (j * 2)) + " 0 R ";
+				for (var p = 0; p < pageCount; p++) {
+				    kids += pageObjects[p] + " 0 R ";
 				}
+				console.log(kids);
 				kids = kids.replace(/^\s+|\s+$/g,'');
 				pdfScript +=
 				"/Kids ["+kids+"]\r\n" +
@@ -313,9 +310,53 @@ function htmlpdfgen(elements) {
 		"<</BaseFont/Times-BoldItalic/Type/Font\r\n" +
 		"/Encoding/WinAnsiEncoding\r\n" +
 		"/Subtype/Type1>>\r\n" +
-		"endobj\r\n" +
+		"endobj\r\n";
 		//end fonts
 
+		//add image raw data
+
+
+		for (var i = 0; i < elements.length; i++) {
+			tagName = elements[i].tagName;
+			if(tagName === "IMG"){
+				var img = elements[i];
+				var canvas = document.createElement('canvas');
+				canvas.width = img.width;
+				canvas.height =  img.height;
+				var context = canvas.getContext('2d');
+				context.drawImage(img, 0, 0 );
+
+				objectNum++;
+				pdfScript +=
+				objectNum + " 0 obj\r\n" +
+				"<</Type /XObject\r\n" +
+				"/Subtype /Image\r\n" +
+				"/Width "+canvas.width+"\r\n" +
+				"/Height "+canvas.height+"\r\n" +
+				"/ColorSpace /DeviceRGB\r\n" +
+				"/BitsPerComponent 8\r\n" +
+				"/Filter /DCTDecode\r\n";
+
+				function b64_to_utf8( str ) {
+				    str = str.replace(/\s/g, '');
+				    return decodeURIComponent(encodeURIComponent(window.atob(str)));
+				}
+
+				var dataURL = canvas.toDataURL("image/jpeg", 1.0).replace("data:image/jpeg;base64,","");
+				var utf8ImgData = b64_to_utf8(dataURL);
+
+				pdfScript +=
+				"/Length 30994>>\r\n" +
+				"stream\r\n" +
+				utf8ImgData + "\r\n" +
+				"endstream\r\n"
+				;
+			}
+		}
+
+
+
+		pdfScript +=
 		"2 0 obj\r\n" + //object 2
 		"<<\r\n" +
 		"/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]\r\n" +
@@ -331,7 +372,11 @@ function htmlpdfgen(elements) {
 		"/F9 "+(fontObjectNum + 8)+" 0 R\r\n" +
 		"/F10 "+(fontObjectNum + 9)+" 0 R\r\n" +
 		">>\r\n" +
-		"/XObject <<\r\n" +
+		"/XObject <<\r\n";
+		if(imgCount > 0){
+			pdfScript += "/I0 17 0 R\r\n";
+		}
+		pdfScript +=
 		">>\r\n" +
 		">>\r\n" +
 		"endobj\r\n";
