@@ -13,6 +13,7 @@ function htmlpdfgen(elements) {
 		var pageCount = 1;
 		var objectNum = 3;
 		var pageObjects = [3]; //starts with object 3
+		var imageObjects = [];
 		var fontObjectNum = 0;
 		var kids = "";
 		var imgCount = 0;
@@ -327,6 +328,7 @@ function htmlpdfgen(elements) {
 				context.drawImage(img, 0, 0 );
 
 				objectNum++;
+				imageObjects.push(objectNum); //add image object reference #
 				pdfScript +=
 				objectNum + " 0 obj\r\n" +
 				"<</Type /XObject\r\n" +
@@ -373,8 +375,9 @@ function htmlpdfgen(elements) {
 		"/F10 "+(fontObjectNum + 9)+" 0 R\r\n" +
 		">>\r\n" +
 		"/XObject <<\r\n";
-		if(imgCount > 0){
-			pdfScript += "/I0 17 0 R\r\n";
+		//creat a reference for each image
+		for (var o = 0; o < imgCount; o++) {
+				pdfScript += "/I"+o+" "+imageObjects[o]+" 0 R\r\n";
 		}
 		pdfScript +=
 		">>\r\n" +
