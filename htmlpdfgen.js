@@ -51,20 +51,17 @@ function htmlpdfgen(elements) {
     var content = "";
 		for (var i = 0; i < elements.length; i++) {
 			tagName = elements[i].tagName;
-			fontColor = elements[i].style.color;
+			fontColor = window.getComputedStyle(elements[i], null).color;
+			//store rga as array
+			fontColor = fontColor.replace(/[^\d,]/g, '').split(',');
+			//convert to pdf rgb values
+			for(var c = 0; c < fontColor.length; c++) {
+					fontColor[c] = (fontColor[c] / 255).toFixed(3);
+			}
 			content = elements[i].innerHTML;
 			recognizedElement = true;
-
-			//get/set font color
-			if(fontColor == 'red') {
-				pdfScript += "1.000 0.000 0.000 rg\r\n";
-			} else if(fontColor == 'green') {
-				pdfScript += "0.000 1.000 0.000 rg\r\n";
-			} else if(fontColor == 'blue') {
-				pdfScript += "0.000 0.000 1.000 rg\r\n";
-			} else {
-				pdfScript += "0.000 0.000 0.000 rg\r\n"; //black
-			}
+			//set font color
+			pdfScript += fontColor[0] + " " + fontColor[1] + " " + fontColor[2] + " rg\r\n";
 
 			//set font sizes based on tagName
 			if(tagName == "IMG") {
