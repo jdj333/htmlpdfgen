@@ -95,7 +95,9 @@ function htmlpdfgen(elements) {
 			} else if(tagName == "H4") {
 					pdfScript += "/F1 16.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "H5") {
-						pdfScript += "/F1 16.75 Tf (" + content + ") Tj\r\n";
+					pdfScript += "/F1 15.75 Tf (" + content + ") Tj\r\n";
+			} else if(tagName == "H6") {
+					pdfScript += "/F1 14.75 Tf (" + content + ") Tj\r\n";
 			} else if(tagName == "P") {
 
 					var charStart = 0;
@@ -122,11 +124,10 @@ function htmlpdfgen(elements) {
 
 						//start new page if element y position has reached bottom
 						//reset y to top
-						if(ycoord < 60.00) {
+						if(ycoord < 50.00) {
 							ycoord = 719.30;
 							pageCount++;
 							//end pag stream
-
 
 							pdfScript +=
 							"ET Q\r\n" +
