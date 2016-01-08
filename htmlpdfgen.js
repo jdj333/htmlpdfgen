@@ -70,13 +70,13 @@ function htmlpdfgen(elements) {
 			if(tagName == "IMG") {
 					//set image position & size
 					img = elements[i];
-					imgCount++;
 
 					pdfScript +=
 					"q BT 0 g 40.00 " + ycoord + " Td\r\n" +
-					"q 400.00 0 0 200.00 40.00 "+(ycoord - (img.height-30))+" cm /I0 Do Q\r\n";
+					"q 400.00 0 0 200.00 40.00 "+(ycoord - (img.height-30))+" cm /I"+imgCount+" Do Q\r\n";
 					//ycoord offset & bottom margin
 					ycoord -= img.height;
+					imgCount++;
 
 			} else if(tagName == "H1") {
 					pdfScript += "/F1 24.75 Tf (" + content + ") Tj\r\n";
